@@ -1,0 +1,1 @@
+docker run -e OWNCLOUD_DOMAIN=localhost:8080 -p8080:8080 --name localcloud -d --restart always -v /opt/cloud:/mnt/data owncloud/server
