@@ -1,0 +1,3 @@
+ansible_user: r196
+ansible_ssh_common_args: '-o ProxyCommand="ssh -i files/id_rsa_pub -W %h:%p -q rfarrahov@sdata:1488"'
+ssh -o ProxyCommand="ssh -i files/id_rsa_pub -W %h:%p -q rfarrahov@sdata:1488"' r196@192.168.1.97

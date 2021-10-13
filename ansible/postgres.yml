@@ -1,0 +1,48 @@
+---
+- name: psql 11 install
+  hosts: PSQL
+  sudo: yes
+  tasks:
+  - name: Tools | Install
+    become: yes
+    apt:
+       pkg: sudo,parted,python-psycopg2,screen,iotop
+       state: latest
+
+  - name: set default locale
+    locale_gen:
+      name: en_US.UTF-8
+      state: present
+
+  - name: Postgresql | Install Common
+    apt:
+       pkg: software-properties-common
+       state: latest
+       update_cache: yes
+
+  - name: Adding PostGreSQL repository PGP Key
+    apt_key:
+       url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+       keyring: "/etc/apt/trusted.gpg.d/postgresql.gpg"
+       state: present
+
+  - name: Adding PostGreSQL repository
+    apt_repository:
+       repo: "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main"
+    
+  - name: Postgresql | Install Pg11
+    apt:
+       update_cache: yes
+       pkg: postgresql-11
+       state: latest
+
+  - name: Change the hostname like ansible host name
+    hostname:
+      name="{{ inventory_hostname }}"
+
+  - name: Fix /etc/hosts removing the old hostname
+    lineinfile:
+      state=present
+      dest=/etc/hosts
+      line="127.0.0.1 {{ inventory_hostname }} {{ ansible_hostname }}"
+      regexp="^127\.0\.0\.1[ \t]+localhost"
