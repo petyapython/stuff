@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
 RUN python3 -m pip install --upgrade pip cffi && \
     pip --quiet install -r /root/install/req.txt \
-    ansible-galaxy install -r /root/install/req.yml
+    ansible-galaxy install -r /root/install/req.yml \
     rm -rf /root/.cache/pip
 WORKDIR /root/install
 
