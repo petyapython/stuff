@@ -1,0 +1,1 @@
+FROM ansible/ansible:ubuntu1604py3
