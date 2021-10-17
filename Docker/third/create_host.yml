@@ -1,0 +1,27 @@
+---
+- name: create droplet
+  hosts: localhost
+  gather_facts: no
+  vars:
+    host_id: "ansible-test"
+    host_size: "s-1vcpu-1gb"
+    host_image: "docker-20-04"
+    host_ssh_keys: ["31708428"]
+    host_region: "sfo3"
+    host_tags: ["test_tag"]
+  tasks:
+    - name: create
+      community.digitalocean.digital_ocean_droplet:
+        name: '{{ host_id }}'
+        oauth_token: "{{ lookup('env','DO_TOKEN') }}"
+        size: "{{ host_size }}"
+        image: "{{ host_image }}"
+        state: "active"
+        #user_data: "{{ lookup('template', 'user_data.j2') | trim }}"
+        region: "{{ host_region }}"
+        ssh_keys: "{{ host_ssh_keys }}"
+        tags: "{{ host_tags }}"
+        wait_timeout: 300
+      register: res_out
+    - name: refresh inventory
+      meta: refresh_inventory
